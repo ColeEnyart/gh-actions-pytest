@@ -1,17 +1,35 @@
-name: run tests
+# name: run tests
+# on:
+#   push:
+#     branches: '**'
+# jobs:
+#   test:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Install pip libraries
+#         run: |
+#           python3 -m pip install --upgrade pip
+#           pip3 install -r requirements.txt
+#       - name: Run unit tests
+#         run: python test_app.py
+        
+name: continuous integration
 on:
   push:
-    branches: '**'
+    branches: [ main ]
 jobs:
-  test:
+  test_codebase:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install pip libraries
+      - name: Set up Python 3.6
+        uses: actions/setup-python@v1
+        with:
+          python-version: "3.6"
+      - name: Install dependencies
         run: |
           python3 -m pip install --upgrade pip
           pip3 install -r requirements.txt
-      - name: Run unit tests
-        run: python test_app.py
-        
-
+      - name: run tests
+        run: pytest
